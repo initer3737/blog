@@ -8,8 +8,14 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   integrations: [svelte()],
-
+  output:"static",
   vite: {
     plugins: [tailwindcss()]
-  }
+  },
+  trailingSlash: 'always',
+  build: {
+    format: 'directory' // Menghasilkan folder /internet/index.html
+  },
+  site: 'https://initer3737.github.io',
+  base: '/blog',
 });
