@@ -12,10 +12,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  trailingSlash: 'always',
   build: {
     format: 'directory' // Menghasilkan folder /internet/index.html
   },
   site: 'https://initer3737.github.io',
   base: '/blog',
+  trailingSlash: 'always',
 });
