@@ -1,0 +1,68 @@
+---
+import  BaseLayout  from "../layouts/BaseLayout.astro";
+import Card from '../components/Card.svelte';
+const metadata={
+	tags:{
+		internet:"internet",
+		jaringan:"jaringan",
+		basic_networking:"basic_networking"
+	}
+}
+const tags=metadata.tags
+type t_articles={
+	id?:string
+	title:string,
+	link_article:string,
+	description:string,
+	thumbnail:string,
+	tags:Array<String>
+}
+const articles:t_articles[]=[
+	{
+		title:"internet",
+		link_article:"",
+		description:"ketahui apa itu jaringan",
+		thumbnail:"/materi/internet/elisariva-network-.png",
+		tags:[tags.basic_networking,tags.internet,tags.jaringan]
+	},
+]
+import { getCollection } from 'astro:content';
+const allPosts = await getCollection('blog');
+const completed_articles:t_articles[]=articles.map(article=>{
+		const matched_id=allPosts.find(data=>data.id===article.title)
+	return {
+		...article,
+		link_article:matched_id
+	}
+})
+
+---
+
+<BaseLayout>
+	{
+		completed_articles.map(data=>(
+		<Card client:load>
+			<div slot="header" class="flex gap-3 flex-col">
+				<p>{data.title}</p>
+			</div>
+			<div slot="body">
+				<div class="flex gap-3 flex-col">
+					<h1>{data.description}</h1>
+					<img src={data.thumbnail} alt="">
+				</div>
+			</div>
+			<div slot="footer">
+				<div class="flex gap-3 items-center justify-center flex-col">
+					<h5>{data.tags.map(data=>{
+						return "#"+data
+					}).join(" ")}</h5>
+					<a href={`/blog/${data.title}`} class="bg-rose-700 text-white px-3 py-1 text-2xl w-full cursor-pointer">
+						article
+					</a>
+				</div>
+			</div>
+		</Card>
+		))
+	}
+</BaseLayout>
+

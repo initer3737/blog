@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from 'astro:content';
+import  BaseLayout  from '../../layouts/BaseLayout.astro';
+// 1. Generate path URL untuk setiap file markdown di dalam koleksi
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.id }, // Astro v5+ menggunakan entry.id untuk slug
+    props: { entry },
+  }));
+}
+
+// 2. Ambil data entry yang dikirim dari getStaticPaths
+const { entry } = Astro.props;
+
+// 3. Render konten markdown menjadi komponen HTML (Astro v5+)
+const { Content } = await render(entry);
+---
+
+
+
+<BaseLayout>
+    <h1>{entry.data.title}</h1>
+    
+    <!-- Tempat menampilkan isi konten Markdown utuh -->
+   
+      <Content />
+</BaseLayout>
